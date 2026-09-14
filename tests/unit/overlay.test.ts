@@ -56,6 +56,14 @@ describe('overlay', () => {
       overlay.destroy()
       expect(() => overlay.showLoading()).not.toThrow()
     })
+
+    it('sets a polite status live region', () => {
+      overlay.showLoading()
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      const content = host.shadowRoot?.querySelector('.content') as HTMLElement
+      expect(content.getAttribute('role')).toBe('status')
+      expect(content.getAttribute('aria-live')).toBe('polite')
+    })
   })
 
   describe('showResult()', () => {
@@ -141,6 +149,14 @@ describe('overlay', () => {
       overlay.destroy()
       expect(() => overlay.showResult('text')).not.toThrow()
     })
+
+    it('sets a polite status live region', () => {
+      overlay.showResult('text')
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      const content = host.shadowRoot?.querySelector('.content') as HTMLElement
+      expect(content.getAttribute('role')).toBe('status')
+      expect(content.getAttribute('aria-live')).toBe('polite')
+    })
   })
 
   describe('showError()', () => {
@@ -156,6 +172,23 @@ describe('overlay', () => {
       overlay.showError('error')
       const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
       expect(host.style.display).toBe('block')
+    })
+
+    it('sets an assertive alert region and clears aria-live (role=alert implies assertive)', () => {
+      overlay.showError('error')
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      const content = host.shadowRoot?.querySelector('.content') as HTMLElement
+      expect(content.getAttribute('role')).toBe('alert')
+      expect(content.hasAttribute('aria-live')).toBe(false)
+    })
+
+    it('reverts to a polite status region if showResult follows a showError', () => {
+      overlay.showError('error')
+      overlay.showResult('text')
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      const content = host.shadowRoot?.querySelector('.content') as HTMLElement
+      expect(content.getAttribute('role')).toBe('status')
+      expect(content.getAttribute('aria-live')).toBe('polite')
     })
 
     it('is a no-op before init()', () => {

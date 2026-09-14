@@ -146,6 +146,11 @@ export function init(): void {
 
   contentEl = document.createElement('div')
   contentEl.className = 'content'
+  // Announced to screen readers automatically as loading/result/error text
+  // changes — this panel is non-modal and never takes focus, so without a
+  // live region a screen reader user would have no way to know it appeared.
+  contentEl.setAttribute('role', 'status')
+  contentEl.setAttribute('aria-live', 'polite')
 
   panel.appendChild(header)
   panel.appendChild(contentEl)
@@ -164,6 +169,9 @@ export function init(): void {
 export function showLoading(): void {
   if (!host || !contentEl) return
   console.debug('[ClearPath] Overlay: showLoading')
+
+  contentEl.setAttribute('role', 'status')
+  contentEl.setAttribute('aria-live', 'polite')
 
   const wrap = document.createElement('div')
   wrap.className = 'spinner-wrap'
@@ -185,6 +193,9 @@ export function showLoading(): void {
 export function showResult(text: string): void {
   if (!host || !contentEl) return
   console.debug('[ClearPath] Overlay: showResult —', text.length, 'chars')
+
+  contentEl.setAttribute('role', 'status')
+  contentEl.setAttribute('aria-live', 'polite')
 
   const p = document.createElement('p')
   p.className = 'result-text'
@@ -214,6 +225,11 @@ export function showResult(text: string): void {
 export function showError(msg: string): void {
   if (!host || !contentEl) return
   console.debug('[ClearPath] Overlay: showError —', msg)
+
+  // role="alert" implies an assertive live region — drop the explicit
+  // aria-live so it doesn't override that with "polite".
+  contentEl.setAttribute('role', 'alert')
+  contentEl.removeAttribute('aria-live')
 
   const p = document.createElement('p')
   p.className = 'error-text'
