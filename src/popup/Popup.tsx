@@ -412,10 +412,10 @@ export function Popup() {
       {/* Header */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
         <div className="w-6 h-6 rounded-md bg-gradient-to-br from-brand-blue to-brand-green flex items-center justify-center">
-          <span className="text-white text-xs font-bold">CP</span>
+          <span className="text-navy-900 text-xs font-bold">CP</span>
         </div>
         <span className="font-semibold text-sm text-white tracking-wide">ClearPath</span>
-        <span className="ml-auto text-xs text-slate-500 font-medium">v0.6</span>
+        <span className="ml-auto text-xs text-slate-400 font-medium">v0.6</span>
       </div>
 
       {/* Read Aloud section */}
@@ -428,7 +428,7 @@ export function Popup() {
           /* Idle state — Read Page button */
           <button
             onClick={handleReadPage}
-            className="w-full py-2.5 rounded-lg font-semibold text-sm text-white transition-all
+            className="w-full py-2.5 rounded-lg font-semibold text-sm text-navy-900 transition-all
               bg-gradient-to-r from-brand-blue to-brand-green
               hover:opacity-90 focus-visible:outline-none focus-visible:ring-2
               focus-visible:ring-brand-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900"
@@ -491,7 +491,7 @@ export function Popup() {
             </div>
 
             {/* Hint: right-click to read selection */}
-            <p className="text-xs text-slate-600 text-center pt-1">
+            <p className="text-xs text-slate-400 text-center pt-1">
               Tip: right-click selected text to read a selection
             </p>
           </div>
@@ -499,7 +499,7 @@ export function Popup() {
 
         {/* Right-click hint (idle state) */}
         {!isActive && (
-          <p className="text-xs text-slate-600 text-center mt-2">
+          <p className="text-xs text-slate-400 text-center mt-2">
             Or right-click selected text \u2192 Read Aloud
           </p>
         )}
@@ -512,7 +512,7 @@ export function Popup() {
             Reading Mode
           </p>
           {readerEnabled && (
-            <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-brand-blue/20 text-brand-blue">
+            <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-brand-blue/10 text-brand-blue">
               Active
             </span>
           )}
@@ -524,7 +524,7 @@ export function Popup() {
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue
             focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900
             ${readerEnabled
-              ? 'bg-brand-blue/20 text-brand-blue border border-brand-blue/40 hover:bg-brand-blue/30'
+              ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/40 hover:bg-brand-blue/20'
               : 'bg-navy-800 text-slate-300 border border-white/10 hover:bg-navy-700'
             }`}
         >
@@ -568,7 +568,7 @@ export function Popup() {
                 className={`px-3 py-1 rounded-md text-xs font-semibold transition-all
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue
                   ${rulerEnabled
-                    ? 'bg-brand-blue/20 text-brand-blue border border-brand-blue/40'
+                    ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/40'
                     : 'bg-navy-800 text-slate-400 border border-white/10 hover:bg-navy-700'
                   }`}
               >
@@ -601,7 +601,7 @@ export function Popup() {
                 className={`px-3 py-1 rounded-md text-xs font-semibold transition-all
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue
                   ${focusEnabled
-                    ? 'bg-brand-blue/20 text-brand-blue border border-brand-blue/40'
+                    ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/40'
                     : 'bg-navy-800 text-slate-400 border border-white/10 hover:bg-navy-700'
                   }`}
               >
@@ -619,7 +619,7 @@ export function Popup() {
                 className={`px-3 py-1 rounded-md text-xs font-semibold transition-all
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue
                   ${complexityEnabled
-                    ? 'bg-brand-blue/20 text-brand-blue border border-brand-blue/40'
+                    ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/40'
                     : 'bg-navy-800 text-slate-400 border border-white/10 hover:bg-navy-700'
                   }`}
               >
@@ -665,7 +665,7 @@ export function Popup() {
                 className={`px-3 py-1 rounded-md text-xs font-semibold transition-all
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue
                   ${symbolsEnabled
-                    ? 'bg-brand-blue/20 text-brand-blue border border-brand-blue/40'
+                    ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/40'
                     : 'bg-navy-800 text-slate-400 border border-white/10 hover:bg-navy-700'
                   }`}
               >
@@ -703,7 +703,7 @@ export function Popup() {
           aria-pressed={vocabEnabled}
           className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue
-            ${vocabEnabled ? 'bg-brand-blue text-white' : 'bg-navy-800 text-slate-400 border border-white/10'}`}
+            ${vocabEnabled ? 'bg-brand-blue text-navy-900' : 'bg-navy-800 text-slate-400 border border-white/10'}`}
         >
           {vocabEnabled ? 'On' : 'Off'}
         </button>
@@ -736,7 +736,7 @@ export function Popup() {
         {showProfiles && (
           <div className="px-4 pb-4 space-y-3">
             {profiles.length === 0 ? (
-              <p className="text-xs text-slate-500">No saved profiles.</p>
+              <p className="text-xs text-slate-400">No saved profiles.</p>
             ) : (
               <ul className="space-y-2">
                 {profiles.map((profile) => (
@@ -746,8 +746,8 @@ export function Popup() {
                       <button
                         onClick={() => handleLoadProfile(profile)}
                         aria-label={`Load ${profile.name}`}
-                        className="px-2 py-1 rounded text-xs font-medium bg-brand-blue/20
-                          text-brand-blue border border-brand-blue/40 hover:bg-brand-blue/30
+                        className="px-2 py-1 rounded text-xs font-medium bg-brand-blue/10
+                          text-brand-blue border border-brand-blue/40 hover:bg-brand-blue/20
                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
                       >
                         Load
@@ -776,13 +776,13 @@ export function Popup() {
                 aria-label="Profile name"
                 className="flex-1 bg-navy-800 border border-white/10 rounded-md px-2 py-1.5
                   text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-blue
-                  placeholder:text-slate-600"
+                  placeholder:text-slate-400"
               />
               <button
                 onClick={handleSaveProfile}
                 aria-label="Save profile"
-                className="px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-blue/20
-                  text-brand-blue border border-brand-blue/40 hover:bg-brand-blue/30
+                className="px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-blue/10
+                  text-brand-blue border border-brand-blue/40 hover:bg-brand-blue/20
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
               >
                 Save
@@ -876,7 +876,7 @@ export function Popup() {
             <div>
               <label className="flex justify-between text-xs text-slate-400 mb-1" htmlFor="cp-rate">
                 <span>Speed</span>
-                <span className="text-slate-500">{rate.toFixed(1)}\u00d7</span>
+                <span className="text-slate-400">{rate.toFixed(1)}\u00d7</span>
               </label>
               <input
                 id="cp-rate"
@@ -889,7 +889,7 @@ export function Popup() {
                 className="w-full"
                 aria-label={`Speech speed: ${rate.toFixed(1)} times`}
               />
-              <div className="flex justify-between text-xs text-slate-600 mt-0.5">
+              <div className="flex justify-between text-xs text-slate-400 mt-0.5">
                 <span>0.5\u00d7</span>
                 <span>2\u00d7</span>
               </div>
@@ -899,7 +899,7 @@ export function Popup() {
             <div>
               <label className="flex justify-between text-xs text-slate-400 mb-1" htmlFor="cp-pitch">
                 <span>Pitch</span>
-                <span className="text-slate-500">{pitch.toFixed(1)}</span>
+                <span className="text-slate-400">{pitch.toFixed(1)}</span>
               </label>
               <input
                 id="cp-pitch"
@@ -912,7 +912,7 @@ export function Popup() {
                 className="w-full"
                 aria-label={`Speech pitch: ${pitch.toFixed(1)}`}
               />
-              <div className="flex justify-between text-xs text-slate-600 mt-0.5">
+              <div className="flex justify-between text-xs text-slate-400 mt-0.5">
                 <span>Low</span>
                 <span>High</span>
               </div>
@@ -1058,7 +1058,7 @@ export function Popup() {
               className={`text-xs font-medium px-1.5 py-0.5 rounded ${
                 llmReady
                   ? 'bg-green-900/40 text-green-400'
-                  : 'bg-slate-800 text-slate-500'
+                  : 'bg-slate-800 text-slate-400'
               }`}
             >
               {llmReady ? 'Ready \u2713' : 'Not configured'}
