@@ -16,6 +16,8 @@ let articleContentEl: HTMLElement | null = null
 let callbacks: ReaderCallbacks | null = null
 let spokenText = ''
 let keydownHandler: ((e: KeyboardEvent) => void) | null = null
+let previouslyFocused: HTMLElement | null = null
+let inertSiblings: HTMLElement[] = []
 
 // ── Font stacks ───────────────────────────────────────────────────────────────
 
@@ -515,6 +517,8 @@ export function getSpokenText(): string {
 export async function open(): Promise<void> {
   if (host) return
 
+  previouslyFocused = document.activeElement as HTMLElement | null
+
   // Extract article
   const docClone = document.cloneNode(true) as Document
   const article = new Readability(docClone).parse()
@@ -540,6 +544,9 @@ export async function open(): Promise<void> {
   container.className = `cp-reader cp-theme-${settings.readerTheme}`
   container.setAttribute('role', 'main')
   container.setAttribute('aria-label', 'Reading Mode')
+  // Not in the natural tab order — only a programmatic focus target so
+  // entering the mode announces the landmark to screen readers.
+  container.tabIndex = -1
 
   // Handle setting changes from header controls
   const handleSettingChange = async (patch: Partial<Settings>): Promise<void> => {
@@ -602,6 +609,16 @@ export async function open(): Promise<void> {
   // Prevent body scroll while reader is open
   document.body.style.overflow = 'hidden'
 
+  // Reader is a full-viewport takeover — make the page behind it inert so
+  // Tab/screen-reader navigation can't reach content hidden underneath it.
+  inertSiblings = Array.from(document.body.children).filter(
+    (el): el is HTMLElement => el instanceof HTMLElement && el !== host,
+  )
+  inertSiblings.forEach((el) => el.setAttribute('inert', ''))
+
+  // Move focus into the reader and announce it as a landmark
+  container.focus()
+
   // Dismiss on Escape
   keydownHandler = (e: KeyboardEvent) => {
     if (e.key === 'Escape') close()
@@ -624,6 +641,15 @@ export function close(): void {
   articleContentEl = null
   spokenText = ''
   document.body.style.overflow = ''
+
+  inertSiblings.forEach((el) => el.removeAttribute('inert'))
+  inertSiblings = []
+
+  if (previouslyFocused && document.contains(previouslyFocused)) {
+    previouslyFocused.focus()
+  }
+  previouslyFocused = null
+
   callbacks?.onClose()
 }
 

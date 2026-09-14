@@ -411,4 +411,52 @@ describe('reader', () => {
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
     expect(onClose).not.toHaveBeenCalled()
   })
+
+  // ── Focus management (2.4.3) ─────────────────────────────────────────────
+
+  it('moves focus into the reader container on open', async () => {
+    await reader.open()
+    const shadow = getShadow()!
+    const container = shadow.querySelector('.cp-reader')
+    expect(shadow.activeElement).toBe(container)
+  })
+
+  it('makes other page content inert while open', async () => {
+    const pageButton = document.createElement('button')
+    pageButton.textContent = 'Page button'
+    document.body.appendChild(pageButton)
+
+    await reader.open()
+    expect(pageButton.hasAttribute('inert')).toBe(true)
+  })
+
+  it('removes inert from page content on close', async () => {
+    const pageButton = document.createElement('button')
+    document.body.appendChild(pageButton)
+
+    await reader.open()
+    reader.close()
+    expect(pageButton.hasAttribute('inert')).toBe(false)
+  })
+
+  it('restores focus to the previously-focused element on close', async () => {
+    const pageButton = document.createElement('button')
+    document.body.appendChild(pageButton)
+    pageButton.focus()
+    expect(document.activeElement).toBe(pageButton)
+
+    await reader.open()
+    reader.close()
+    expect(document.activeElement).toBe(pageButton)
+  })
+
+  it('does not throw restoring focus when the previously-focused element is gone', async () => {
+    const pageButton = document.createElement('button')
+    document.body.appendChild(pageButton)
+    pageButton.focus()
+
+    await reader.open()
+    pageButton.remove()
+    expect(() => reader.close()).not.toThrow()
+  })
 })
