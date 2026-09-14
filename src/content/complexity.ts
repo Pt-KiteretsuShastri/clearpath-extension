@@ -1,5 +1,5 @@
 // Word complexity — underlines hard words in the reading mode content area and
-// shows a simpler alternative on hover via a CSS tooltip.
+// shows a simpler alternative on hover or keyboard focus via a CSS tooltip.
 // Word map sourced from plainlanguage.gov A–Z list + common medical/legal/academic jargon.
 
 // ── Word map ──────────────────────────────────────────────────────────────────
@@ -220,6 +220,11 @@ function wrapTextNode(textNode: Text): void {
       span.className = 'cp-complex'
       span.dataset.simpler = simpler
       span.textContent = word
+      // Focusable so keyboard users can reach the tooltip (not just hover);
+      // aria-label carries the definition since CSS ::after content is
+      // invisible to the accessibility tree.
+      span.tabIndex = 0
+      span.setAttribute('aria-label', `${word}, simpler: ${simpler}`)
       frag.appendChild(span)
     } else {
       frag.appendChild(document.createTextNode(word))

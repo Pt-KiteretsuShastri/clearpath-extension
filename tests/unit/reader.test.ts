@@ -366,6 +366,13 @@ describe('reader', () => {
     expect(mockSetSettings).toHaveBeenCalledWith({ readerTheme: 'dark' })
   })
 
+  it('word complexity tooltip CSS triggers on focus as well as hover', async () => {
+    await reader.open()
+    const shadow = getShadow()!
+    const css = shadow.querySelector('style')?.textContent ?? ''
+    expect(css).toContain('.cp-complex:focus-visible::after')
+  })
+
   it('close button in header closes the reader', async () => {
     await reader.open()
     expect(reader.isOpen()).toBe(true)

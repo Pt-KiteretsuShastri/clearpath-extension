@@ -291,7 +291,9 @@ function buildCSS(settings: Settings): string {
       text-underline-offset: 3px;
       cursor: help;
       position: relative;
+      border-radius: 3px;
     }
+    .cp-complex:focus-visible { outline: 2px solid #5B9BF8; outline-offset: 2px; }
     .cp-theme-contrast .cp-complex { text-decoration-color: #FFD700; }
     .cp-complex::after {
       content: attr(data-simpler);
@@ -311,7 +313,8 @@ function buildCSS(settings: Settings): string {
       transition: opacity 0.15s;
       z-index: 10;
     }
-    .cp-complex:hover::after { opacity: 1; }
+    .cp-complex:hover::after,
+    .cp-complex:focus-visible::after { opacity: 1; }
     .cp-theme-contrast .cp-complex::after { background: #333; color: #ffff00; }
   `
 }

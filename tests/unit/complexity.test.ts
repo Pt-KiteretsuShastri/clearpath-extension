@@ -34,6 +34,14 @@ describe('complexity', () => {
     expect((spans[0] as HTMLElement).dataset.simpler).toBe('use')
   })
 
+  it('wrapped spans are keyboard-focusable with an accessible label', () => {
+    const container = makeContainer('<p>Please utilize the form.</p>')
+    complexity.attach(container)
+    const span = container.querySelector('.cp-complex') as HTMLElement
+    expect(span.tabIndex).toBe(0)
+    expect(span.getAttribute('aria-label')).toBe('utilize, simpler: use')
+  })
+
   it('attach is case-insensitive', () => {
     const container = makeContainer('<p>You should Utilize this tool.</p>')
     complexity.attach(container)
