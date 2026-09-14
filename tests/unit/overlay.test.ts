@@ -192,6 +192,40 @@ describe('overlay', () => {
     })
   })
 
+  describe('Escape key', () => {
+    beforeEach(() => overlay.init())
+
+    it('closes the overlay when visible', () => {
+      overlay.showResult('text')
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      expect(host.style.display).toBe('none')
+    })
+
+    it('does nothing when the overlay is already hidden', () => {
+      expect(() =>
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })),
+      ).not.toThrow()
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      expect(host.style.display).toBe('none')
+    })
+
+    it('other keys do not close the overlay', () => {
+      overlay.showResult('text')
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      expect(host.style.display).toBe('block')
+    })
+
+    it('removes the listener on destroy() — a later Escape press throws nothing and has no effect', () => {
+      overlay.showResult('text')
+      overlay.destroy()
+      expect(() =>
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })),
+      ).not.toThrow()
+    })
+  })
+
   describe('destroy()', () => {
     it('removes the host from the DOM', () => {
       overlay.init()

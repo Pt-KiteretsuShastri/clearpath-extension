@@ -15,6 +15,7 @@ let shadow: ShadowRoot | null = null
 let articleContentEl: HTMLElement | null = null
 let callbacks: ReaderCallbacks | null = null
 let spokenText = ''
+let keydownHandler: ((e: KeyboardEvent) => void) | null = null
 
 // ── Font stacks ───────────────────────────────────────────────────────────────
 
@@ -597,12 +598,23 @@ export async function open(): Promise<void> {
 
   // Prevent body scroll while reader is open
   document.body.style.overflow = 'hidden'
+
+  // Dismiss on Escape
+  keydownHandler = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') close()
+  }
+  document.addEventListener('keydown', keydownHandler)
+
   console.debug('[ClearPath] Reader: open — words:', wordCount(spokenText))
 }
 
 export function close(): void {
   if (!host) return
   console.debug('[ClearPath] Reader: closing')
+  if (keydownHandler) {
+    document.removeEventListener('keydown', keydownHandler)
+    keydownHandler = null
+  }
   host.remove()
   host = null
   shadow = null

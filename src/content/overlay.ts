@@ -1,6 +1,7 @@
 let host: HTMLElement | null = null
 let shadow: ShadowRoot | null = null
 let contentEl: HTMLElement | null = null
+let keydownHandler: ((e: KeyboardEvent) => void) | null = null
 
 const CSS = `
   :host {
@@ -152,6 +153,12 @@ export function init(): void {
 
   document.body.appendChild(host)
   host.style.display = 'none'
+
+  // Dismiss on Escape
+  keydownHandler = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && host?.style.display !== 'none') hide()
+  }
+  document.addEventListener('keydown', keydownHandler)
 }
 
 export function showLoading(): void {
@@ -223,6 +230,10 @@ export function hide(): void {
 }
 
 export function destroy(): void {
+  if (keydownHandler) {
+    document.removeEventListener('keydown', keydownHandler)
+    keydownHandler = null
+  }
   host?.remove()
   host = null
   shadow = null

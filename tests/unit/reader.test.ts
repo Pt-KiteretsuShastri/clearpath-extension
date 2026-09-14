@@ -374,4 +374,34 @@ describe('reader', () => {
     closeBtn.click()
     expect(reader.isOpen()).toBe(false)
   })
+
+  // ── Keyboard dismiss ───────────────────────────────────────────────────────
+
+  it('Escape key closes the reader', async () => {
+    await reader.open()
+    expect(reader.isOpen()).toBe(true)
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    expect(reader.isOpen()).toBe(false)
+  })
+
+  it('other keys do not close the reader', async () => {
+    await reader.open()
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+    expect(reader.isOpen()).toBe(true)
+  })
+
+  it('Escape key does nothing when the reader is not open', () => {
+    expect(() =>
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })),
+    ).not.toThrow()
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('removes the Escape listener on close — a later Escape press has no effect', async () => {
+    await reader.open()
+    reader.close()
+    onClose.mockClear()
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    expect(onClose).not.toHaveBeenCalled()
+  })
 })

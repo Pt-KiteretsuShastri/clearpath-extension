@@ -1,5 +1,15 @@
 // Global test setup
 import '@testing-library/jest-dom/vitest'
+import { toHaveNoViolations } from 'jest-axe'
+
+expect.extend(toHaveNoViolations)
+
+// jest-axe ships Jest matcher types only — extend Vitest's Assertion here
+declare module 'vitest' {
+  interface Assertion {
+    toHaveNoViolations(): void
+  }
+}
 
 // Minimal chrome API mock for tests
 const chromeMock = {
