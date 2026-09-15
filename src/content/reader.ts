@@ -264,6 +264,11 @@ function buildCSS(settings: Settings): string {
       margin: 1em 0;
     }
     .cp-body a { color: #5B9BF8; }
+    /* brand-blue is only 2.45-2.80:1 on the light/sepia backgrounds below —
+       darkened here to clear 4.5:1; dark theme's near-black bg keeps the
+       base brand-blue link color, which already passes at 6.32:1. */
+    .cp-theme-light  .cp-body a { color: #1d4ed8; }
+    .cp-theme-sepia  .cp-body a { color: #1d4ed8; }
     .cp-theme-contrast .cp-body a { color: #87ceeb; }
     .cp-body img { max-width: 100%; border-radius: 4px; }
     .cp-body figure { margin: 1em 0; }
@@ -276,7 +281,9 @@ function buildCSS(settings: Settings): string {
     .cp-word.cp-active { background-color: rgba(91, 155, 248, 0.35); }
     .cp-theme-sepia    .cp-word.cp-active { background-color: rgba(180, 120, 60, 0.3); }
     .cp-theme-dark     .cp-word.cp-active { background-color: rgba(91, 155, 248, 0.4); }
-    .cp-theme-contrast .cp-word.cp-active { background-color: rgba(255, 255, 0, 0.4); color: #000; }
+    /* 0.4 alpha only reached 3.47:1 for the black text against it — bumped
+       to clear 4.5:1 (this is the "high contrast" theme, after all). */
+    .cp-theme-contrast .cp-word.cp-active { background-color: rgba(255, 255, 0, 0.55); color: #000; }
 
     /* ── Paragraph focus ── */
     .cp-body.cp-focus-active > * {
@@ -310,13 +317,13 @@ function buildCSS(settings: Settings): string {
       font-size: 0.78em;
       font-family: system-ui, -apple-system, sans-serif;
       white-space: nowrap;
-      pointer-events: none;
       opacity: 0;
       transition: opacity 0.15s;
       z-index: 10;
     }
     .cp-complex:hover::after,
-    .cp-complex:focus-visible::after { opacity: 1; }
+    .cp-complex:focus-visible::after,
+    .cp-complex::after:hover { opacity: 1; }
     .cp-theme-contrast .cp-complex::after { background: #333; color: #ffff00; }
   `
 }

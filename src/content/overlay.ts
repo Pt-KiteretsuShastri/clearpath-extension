@@ -96,7 +96,8 @@ const CSS = `
     background: #5B9BF8;
     border: none;
     cursor: pointer;
-    color: white;
+    /* white on brand-blue is only 2.80:1 — navy-900 clears 4.5:1 */
+    color: #0D1F3C;
     font-size: 12px;
     font-weight: 600;
     padding: 6px 14px;

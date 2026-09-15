@@ -157,6 +157,13 @@ describe('overlay', () => {
       expect(content.getAttribute('role')).toBe('status')
       expect(content.getAttribute('aria-live')).toBe('polite')
     })
+
+    it('copy button uses a dark text color on its blue background (1.4.3 — white was 2.80:1)', () => {
+      overlay.init()
+      const host = document.body.querySelector('#clearpath-overlay-host') as HTMLElement
+      const css = host.shadowRoot?.querySelector('style')?.textContent ?? ''
+      expect(css).toContain('color: #0D1F3C')
+    })
   })
 
   describe('showError()', () => {

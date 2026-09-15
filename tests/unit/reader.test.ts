@@ -373,6 +373,29 @@ describe('reader', () => {
     expect(css).toContain('.cp-complex:focus-visible::after')
   })
 
+  it('word complexity tooltip stays visible when the pointer moves onto it (1.4.13 Hoverable)', async () => {
+    await reader.open()
+    const shadow = getShadow()!
+    const css = shadow.querySelector('style')?.textContent ?? ''
+    expect(css).not.toContain('pointer-events: none')
+    expect(css).toContain('.cp-complex::after:hover')
+  })
+
+  it('light and sepia theme article links are darkened for contrast (1.4.3)', async () => {
+    await reader.open()
+    const shadow = getShadow()!
+    const css = shadow.querySelector('style')?.textContent ?? ''
+    expect(css).toContain('.cp-theme-light  .cp-body a { color: #1d4ed8; }')
+    expect(css).toContain('.cp-theme-sepia  .cp-body a { color: #1d4ed8; }')
+  })
+
+  it('contrast theme active-word highlight alpha is strong enough for AA (1.4.3)', async () => {
+    await reader.open()
+    const shadow = getShadow()!
+    const css = shadow.querySelector('style')?.textContent ?? ''
+    expect(css).toContain('rgba(255, 255, 0, 0.55)')
+  })
+
   it('close button in header closes the reader', async () => {
     await reader.open()
     expect(reader.isOpen()).toBe(true)
